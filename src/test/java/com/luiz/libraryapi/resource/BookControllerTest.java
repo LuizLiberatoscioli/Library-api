@@ -48,7 +48,7 @@ public class BookControllerTest {
 		.andExpect(MockMvcResultMatchers.jsonPath("id").isNotEmpty())		//testar o json de resposta com os dados 
 		.andExpect(MockMvcResultMatchers.jsonPath("title").value("Meu livro"))
 		.andExpect(MockMvcResultMatchers.jsonPath("author").value("Autor"))
-		.andExpect(MockMvcResultMatchers.jsonPath("isbn").value("isbn"))
+		.andExpect(MockMvcResultMatchers.jsonPath("isbn").value("123456"))
 		;
 		
 	}
