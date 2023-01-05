@@ -1,23 +1,18 @@
-package com.luiz.libraryapi.api.dto;
+package com.luiz.libraryapi.model.entity;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
-import lombok.Getter;
+import lombok.Data;
 import lombok.NoArgsConstructor;
-import lombok.Setter;
 
-@Getter
-@Setter
+@Data
 @Builder
-@NoArgsConstructor
 @AllArgsConstructor
-public class BookDTO {
+@NoArgsConstructor
+public class Book {
 
 	private Long id;
 	private String title;
 	private String author;
 	private String isbn;
-	
-
-	
 }
