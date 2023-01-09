@@ -1,5 +1,7 @@
 package com.luiz.libraryapi.bookService.Impl;
 
+import java.util.Optional;
+
 import org.springframework.stereotype.Service;
 
 import com.luiz.libraryapi.exception.BusinessException;
@@ -23,5 +25,24 @@ public class BookServiceImpl implements BookService {
 		}
 		return repository.save(book);
 	}
+
+	@Override
+	public Optional<Book> getById(Long id) {
+		return Optional.empty();
+	}
+
+	@Override
+	public void delete(Book book) {
+		
+		
+	}
+
+	@Override
+	public Object update(Book updatingBook) {
+		
+		return null;
+	}
+	
+	
 
 }
