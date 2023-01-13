@@ -12,5 +12,5 @@ public interface BookService {
 
 	void delete(Book book);
 
-	Object update(Book updatingBook);
+	Book update(Book book);
 }
