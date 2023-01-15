@@ -28,7 +28,7 @@ public class BookServiceImpl implements BookService {
 
 	@Override
 	public Optional<Book> getById(Long id) {
-		return Optional.empty();
+		return this.repository.findById(id);
 	}
 
 	@Override
@@ -38,7 +38,7 @@ public class BookServiceImpl implements BookService {
 	}
 
 	@Override
-	public Object update(Book updatingBook) {
+	public Book update(Book updatingBook) {
 		
 		return null;
 	}

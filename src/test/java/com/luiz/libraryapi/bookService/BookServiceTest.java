@@ -2,6 +2,8 @@ package com.luiz.libraryapi.bookService;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import java.util.Optional;
+
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -76,6 +78,41 @@ public class BookServiceTest {
 		 .hasMessage("Isbn ja cadastrado.");
 		 
 		 Mockito.verify(repository , Mockito.never()).save(book);
+		
+	}
+	
+	@Test
+	@DisplayName ("Deve obter um livro por ID")
+	public void getByIdTest() {
+		Long id = 1l;
+		Book book =createValidBook();
+		book.setId(id);
+		
+		Mockito.when(repository.findById(id)).thenReturn(Optional.of(book));
+		
+		//execucao
+		Optional<Book> foundBook = service.getById(id);
+		
+		//verificacao
+		assertThat( foundBook.isPresent() ).isTrue();
+		assertThat( foundBook.get().getId() ).isEqualTo(id);
+		assertThat( foundBook.get().getAuthor() ).isEqualTo(book.getAuthor());
+		assertThat( foundBook.get().getTitle() ).isEqualTo(book.getTitle());
+		assertThat( foundBook.get().getIsbn() ).isEqualTo(book.getIsbn());
+	}
+	
+	@Test
+	@DisplayName ("Deve retornar vazio ao obter um livro por Id quando não existe na base.")
+	public void bookNotFoundByIdTest() {
+		Long id = 1l;
+		
+		Mockito.when(repository.findById(id)).thenReturn(Optional.empty());
+		
+		//execucao
+		Optional<Book> book = service.getById(id);
+		
+		//verificacao
+		assertThat( book.isPresent() ).isFalse();
 		
 	}
 	

@@ -23,7 +23,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.google.common.base.Optional;
+import java.util.Optional;
 import com.luiz.libraryapi.api.dto.BookDTO;
 import com.luiz.libraryapi.exception.BusinessException;
 import com.luiz.libraryapi.model.entity.Book;
@@ -186,7 +186,7 @@ public class BookControllerTest {
 	   
 	   @Test
 	    @DisplayName("Deve atualizar um livro")
-	    public void updateBookTest() throws Exception {
+	    public void updateBookTest1() throws Exception {
 	        Long id = 1l;
 	        String json = new ObjectMapper().writeValueAsString(createNewBook());
 
@@ -210,7 +210,7 @@ public class BookControllerTest {
 	    }
 	   @Test
 	    @DisplayName("Deve retornar 404 ao tentar atualizar um livro inexistente")
-	    public void updateInexistentBookTest() throws Exception {
+	    public void updateInexistentBookTest1() throws Exception {
 
 	        String json = new ObjectMapper().writeValueAsString(createNewBook());
 	        BDDMockito.given( service.getById(Mockito.anyLong()) )
