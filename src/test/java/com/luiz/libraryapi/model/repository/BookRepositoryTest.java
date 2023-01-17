@@ -55,8 +55,6 @@ public class BookRepositoryTest {
 		
 		String isbn = "123";
 		
-		
-		
 		//execucao
 		
 		boolean exists = repository.existsByIsbn(isbn);

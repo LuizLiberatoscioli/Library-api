@@ -1,9 +1,11 @@
 package com.luiz.libraryapi.bookService;
 
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.mockito.ArgumentMatchers.isNotNull;
 
 import java.util.Optional;
 
+import org.apache.catalina.startup.ClassLoaderFactory.Repository;
 import org.assertj.core.api.Assertions;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.DisplayName;
@@ -84,6 +86,8 @@ public class BookServiceTest {
 	@Test
 	@DisplayName ("Deve obter um livro por ID")
 	public void getByIdTest() {
+		
+		//cenario
 		Long id = 1l;
 		Book book =createValidBook();
 		book.setId(id);
@@ -115,5 +119,67 @@ public class BookServiceTest {
 		assertThat( book.isPresent() ).isFalse();
 		
 	}
+	@Test
+	@DisplayName ("Deve deletar o livro.")
+	public void bookDeleteTest() {
+		//cenario 
+		Long id = 1l;
+		Book book = createValidBook();
+		book.setId(id);
+		
+		//execucao
+		org.junit.jupiter.api.Assertions.assertDoesNotThrow( () -> service.delete(book)); 
+		
+		//verificacao
+		Mockito.verify(repository ,Mockito.times(1) ).delete(book);
+		
+	}
+	@Test
+	@DisplayName ("Não pode apagar book inexistente.")
+	public void nullBookDeleteTest() {
 	
+		Book book = new Book();
+	
+		//execucao
+		org.junit.jupiter.api.Assertions.assertThrows( IllegalArgumentException.class,() -> service.delete(book)); 
+		
+		//verificacao
+		Mockito.verify(repository ,Mockito.times(0) ).delete(book);
+	}
+	
+	@Test
+	@DisplayName ("deve fazer update do book")
+	public void bookUpdateTest() {
+		Long id = 1l;
+		Book updatingBook = createValidBook();
+		updatingBook.setId(id);
+		
+		//simulacao
+		Book updatedBook = createValidBook();
+		updatedBook.setId(id);
+		
+		Mockito.when(repository.save(updatingBook)).thenReturn(updatedBook);
+		//execucao
+		Book book = service.update(updatedBook);
+		
+		
+		//verificacao
+		assertThat(book.getId()).isEqualTo(updatedBook.getId());
+		assertThat(book.getAuthor()).isEqualTo(updatedBook.getAuthor());
+		assertThat(book.getIsbn()).isEqualTo(updatedBook.getIsbn());
+		assertThat(book.getTitle()).isEqualTo(updatedBook.getTitle());
+	}
+	
+	@Test
+	@DisplayName ("não deve fazer update do book se id is null")
+	public void nullBookUpdateTest() {
+		
+		Book book = new Book();
+		
+		//execucao
+		org.junit.jupiter.api.Assertions.assertThrows( IllegalArgumentException.class,() -> service.update(book)); 
+		
+		//verificacao
+		Mockito.verify(repository ,Mockito.times(0) ).save(book);
+	}
 }
