@@ -1,8 +1,15 @@
 package com.luiz.libraryapi.api.resoucer;
 
+import java.util.List;
+import java.util.stream.Collectors;
+
 import javax.validation.Valid;
 
 import org.modelmapper.ModelMapper;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageImpl;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.http.HttpStatus;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.MethodArgumentNotValidException;
@@ -78,6 +85,20 @@ public class BookController {
 
 	        }).orElseThrow( () -> new ResponseStatusException(HttpStatus.NOT_FOUND) );
 	    }
+	  
+	  @GetMapping ("{id}")
+	  public Page<BookDTO> find(BookDTO dto , Pageable pageRequest){
+		  Book filter = modelMapper.map(dto, Book.class);
+		  Page<Book> result = service.find(filter, pageRequest);
+		  
+		  List<BookDTO> list = result.getContent().stream()
+		  .map( entity -> modelMapper.map(entity, BookDTO.class))
+		  .collect( Collectors.toList());
+		
+		  return new PageImpl <BookDTO> (list , pageRequest , result.getTotalElements());
+		  
+	  }
+	  
 	
 	@PutMapping
 	public BookDTO put (@PathVariable Long id, BookDTO dto) {
