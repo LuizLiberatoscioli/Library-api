@@ -30,13 +30,14 @@ import org.springframework.test.web.servlet.result.MockMvcResultMatchers;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luiz.libraryapi.api.dto.BookDTO;
+import com.luiz.libraryapi.api.resoucer.BookController;
 import com.luiz.libraryapi.exception.BusinessException;
 import com.luiz.libraryapi.model.entity.Book;
 import com.luiz.libraryapi.service.BookService;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")  
-@WebMvcTest
+@WebMvcTest(controllers = BookController.class)
 @AutoConfigureMockMvc
 public class BookControllerTest {
 	

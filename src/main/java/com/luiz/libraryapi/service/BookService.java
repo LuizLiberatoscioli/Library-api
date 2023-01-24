@@ -18,4 +18,6 @@ public interface BookService {
 	Book update(Book book);
 
 	Page<Book> find(Book filter, org.springframework.data.domain.Pageable pageRequest);
+	
+	Optional<Book> getBookByIsbn(String isbn);
 }
