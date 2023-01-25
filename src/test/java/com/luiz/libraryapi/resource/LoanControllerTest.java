@@ -1,11 +1,13 @@
 package com.luiz.libraryapi.resource;
 
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
 import java.time.LocalDate;
 import java.util.Optional;
 
+import org.hamcrest.Matchers;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.extension.ExtendWith;
@@ -23,8 +25,8 @@ import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilde
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
+import com.luiz.libraryapi.api.dto.LoanDTO;
 import com.luiz.libraryapi.api.resoucer.LoanController;
-import com.luiz.libraryapi.dto.LoanDTO;
 import com.luiz.libraryapi.model.entity.Book;
 import com.luiz.libraryapi.model.entity.Loan;
 import com.luiz.libraryapi.service.BookService;
@@ -48,7 +50,7 @@ public class LoanControllerTest {
 	private LoanService loanService;
 	
 	@Test
-	@DisplayName ("Deve realizar um emprestim")
+	@DisplayName ("Deve realizar um emprestimo")
 	public void createLoanTest() throws Exception {
 		
 		LoanDTO dto = LoanDTO.builder().isbn("123").customer("Fulano").build();
@@ -69,9 +71,31 @@ public class LoanControllerTest {
 		
 		mvc.perform(request)
 		.andExpect ( status ().isCreated())
-		.andExpect(jsonPath ("id").value(1l));
+		.andExpect( content().string("1"))
+		;
 		
 	}
-	
+	@Test
+	@DisplayName ("Deve retornar erro ao tentar fazer emprestimo")
+	public void invalidIsbnCreateLoanTest() throws Exception{
+		
+		LoanDTO dto = LoanDTO.builder().isbn("123").customer("Fulano").build();
+		String json = new ObjectMapper().writeValueAsString(dto);
+		
+		BDDMockito.given(bookService.getBookByIsbn("123"))
+		.willReturn(Optional.empty()) ;
+		
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post( LOAN_API )
+				.accept(org.springframework.http.MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json);
+				
+				mvc.perform(request)
+				.andExpect ( status ().isBadRequest())
+				.andExpect( jsonPath("errors", Matchers.hasSize(1)) )
+				.andExpect(jsonPath ("errors[1]").value("Book not found for passed isbn"))
+				;
+		
+	}
 	
 }

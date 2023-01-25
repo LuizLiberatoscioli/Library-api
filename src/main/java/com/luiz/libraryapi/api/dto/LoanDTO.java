@@ -1,4 +1,4 @@
-package com.luiz.libraryapi.dto;
+package com.luiz.libraryapi.api.dto;
 
 import lombok.AllArgsConstructor;
 import lombok.Builder;
