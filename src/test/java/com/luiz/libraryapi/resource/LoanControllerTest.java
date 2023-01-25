@@ -27,6 +27,7 @@ import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luiz.libraryapi.api.dto.LoanDTO;
 import com.luiz.libraryapi.api.resoucer.LoanController;
+import com.luiz.libraryapi.exception.BusinessException;
 import com.luiz.libraryapi.model.entity.Book;
 import com.luiz.libraryapi.model.entity.Loan;
 import com.luiz.libraryapi.service.BookService;
@@ -94,6 +95,33 @@ public class LoanControllerTest {
 				.andExpect ( status ().isBadRequest())
 				.andExpect( jsonPath("errors", Matchers.hasSize(1)) )
 				.andExpect(jsonPath ("errors[1]").value("Book not found for passed isbn"))
+				;
+		
+	}
+	
+	@Test
+	@DisplayName ("Deve retornar erro ao tentar fazer emprestimo de um livro emprestado.")
+	public void loanedBookErrorOnCreateLoanTest() throws Exception{
+		
+		LoanDTO dto = LoanDTO.builder().isbn("123").customer("Fulano").build();
+		String json = new ObjectMapper().writeValueAsString(dto);
+		
+		Book book = Book.builder().id(1l).isbn("123").build();
+		BDDMockito.given(bookService.getBookByIsbn("123"))
+		.willReturn(Optional.of(book)) ;
+		
+		BDDMockito.given(loanService.save(Mockito.any(Loan.class)) )
+		.willThrow(new BusinessException ("Book already loaned"));
+		
+		MockHttpServletRequestBuilder request = MockMvcRequestBuilders.post( LOAN_API )
+				.accept(org.springframework.http.MediaType.APPLICATION_JSON)
+				.contentType(MediaType.APPLICATION_JSON)
+				.content(json);
+				
+				mvc.perform(request)
+				.andExpect ( status ().isBadRequest())
+				.andExpect( jsonPath("errors", Matchers.hasSize(1)) )
+				.andExpect(jsonPath ("errors[1]").value("Book already loaned"))
 				;
 		
 	}
