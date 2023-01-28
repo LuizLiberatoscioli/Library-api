@@ -1,5 +1,7 @@
 package com.luiz.libraryapi.service.impl;
 
+import java.util.Optional;
+
 import com.luiz.libraryapi.exception.BusinessException;
 import com.luiz.libraryapi.model.entity.Loan;
 import com.luiz.libraryapi.model.repository.LoanRepository;
@@ -18,6 +20,16 @@ public class LoanServiceImpl implements LoanService{
 		if (repository.existsByBookAndNotReturned (loan.getBook()) ) {
 			throw new BusinessException ("Book already loaned");
 		}
+		return repository.save(loan);
+	}
+
+	@Override
+	public Optional<Loan> getById(Long id) {
+		return repository.findById(id);
+	}
+
+	@Override
+	public Loan update(Loan loan) {
 		return repository.save(loan);
 	}
 

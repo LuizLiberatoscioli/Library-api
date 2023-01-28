@@ -1,5 +1,6 @@
 package com.luiz.libraryapi.resource;
 
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.patch;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
@@ -24,8 +25,10 @@ import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.request.MockHttpServletRequestBuilder;
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders;
 
+import com.fasterxml.jackson.core.JsonProcessingException;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luiz.libraryapi.api.dto.LoanDTO;
+import com.luiz.libraryapi.api.dto.ReturnedLoanDTO;
 import com.luiz.libraryapi.api.resoucer.LoanController;
 import com.luiz.libraryapi.exception.BusinessException;
 import com.luiz.libraryapi.model.entity.Book;
@@ -125,5 +128,46 @@ public class LoanControllerTest {
 				;
 		
 	}
+	
+	@Test
+	@DisplayName ("Deve retornar um livro")
+	public void returnBookTest() throws Exception {
+		//cenario (returned: true)
+		ReturnedLoanDTO dto = ReturnedLoanDTO.builder().returned(true).build();
+		Loan loan = Loan.builder().id(1l).build();
+		
+		BDDMockito.given(loanService.getById(Mockito.anyLong()))
+		.willReturn(Optional.of(loan));
+		
+		String json = new ObjectMapper().writeValueAsString(dto);
+		
+		mvc.perform(
+				patch(LOAN_API.concat("/1"))
+				.accept(MediaType.APPLICATION_JSON)
+				.content(json)
+				).andExpect( status () .isOk());
+		
+		Mockito.verify(loanService, Mockito.times(1)).update(loan);
+	}
+	
+	@Test
+	@DisplayName ("Deve retornar 404 quando tentar devolver um livro inexistente")
+	public void returnInexistentBookTest() throws Exception {
+		//cenario (returned: true)
+		ReturnedLoanDTO dto = ReturnedLoanDTO.builder().returned(true).build();
+		
+		
+		BDDMockito.given(loanService.getById(Mockito.anyLong()))
+			.willReturn(Optional.empty());
+		
+		String json = new ObjectMapper().writeValueAsString(dto);
+		
+		mvc.perform(
+				patch(LOAN_API.concat("/1"))
+				.accept(MediaType.APPLICATION_JSON)
+				.content(json)
+				).andExpect( status () .isNotFound());
+	}
+	
 	
 }
