@@ -275,9 +275,6 @@ public class BookControllerTest {
 	                .andExpect( status().isNotFound() );
 	    }
 	
-	
-	
-	
 	  
 	   @Test
 	   @DisplayName("Deve filtrar books.")
