@@ -34,7 +34,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.luiz.libraryapi.api.dto.LoanDTO;
 import com.luiz.libraryapi.api.dto.LoanFilterDTO;
 import com.luiz.libraryapi.api.dto.ReturnedLoanDTO;
-import com.luiz.libraryapi.api.resoucer.LoanController;
+import com.luiz.libraryapi.api.resouce.LoanController;
 import com.luiz.libraryapi.bookService.LoanServiceTest;
 import com.luiz.libraryapi.exception.BusinessException;
 import com.luiz.libraryapi.model.entity.Book;

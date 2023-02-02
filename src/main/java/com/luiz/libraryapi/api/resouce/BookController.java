@@ -1,4 +1,4 @@
-package com.luiz.libraryapi.api.resoucer;
+package com.luiz.libraryapi.api.resouce;
 
 import java.util.List;
 import java.util.stream.Collectors;

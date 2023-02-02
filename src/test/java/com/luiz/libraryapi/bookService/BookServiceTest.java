@@ -23,11 +23,11 @@ import org.springframework.data.domain.PageRequest;
 import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.junit.jupiter.SpringExtension;
 
-import com.luiz.libraryapi.bookService.Impl.BookServiceImpl;
 import com.luiz.libraryapi.exception.BusinessException;
 import com.luiz.libraryapi.model.entity.Book;
 import com.luiz.libraryapi.model.repository.BookRepository;
 import com.luiz.libraryapi.service.BookService;
+import com.luiz.libraryapi.service.impl.BookServiceImpl;
 
 @ExtendWith(SpringExtension.class)
 @ActiveProfiles("test")  

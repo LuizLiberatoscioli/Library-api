@@ -1,4 +1,4 @@
-package com.luiz.libraryapi.api.resoucer;
+package com.luiz.libraryapi.api.resouce;
 
 import lombok.RequiredArgsConstructor;
 import org.modelmapper.ModelMapper;

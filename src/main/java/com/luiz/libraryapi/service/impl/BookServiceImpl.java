@@ -1,4 +1,4 @@
-package com.luiz.libraryapi.bookService.Impl;
+package com.luiz.libraryapi.service.impl;
 
 import java.util.Optional;
 
