@@ -19,25 +19,19 @@ public class SwaggerConfig {
 	public Docket docket () {
 		return new Docket(DocumentationType.SWAGGER_2)
 				.select()
-				.apis(RequestHandlerSelectors.basePackage("com.luiz.libraryapi.api.resoucer") )
-				.paths(PathSelectors.any())
-				.build()
-				.apiInfo(apiInfo());
-	}
-	
-	private ApiInfo apiInfo() {
-		return new ApiInfoBuilder()
-				.title("Library_Api")
-				.description("API do projeto de controle de aluguel de livros")
-				.version("1.0")
-				.contact(contact())
+				.apis(RequestHandlerSelectors.basePackage("com.luiz.libraryapi") )
+				.paths(PathSelectors.ant("/**"))
 				.build();
+			    //.apiInfo(apiInfo());
 	}
 	
-	private Contact contact() {
-		return new Contact ("Luiz Paulo", "https://github.com/LuizLiberatoscioli" , "luizhat10@gmail.com");
-	}
-	
-	
+	/*
+	 * private ApiInfo apiInfo() { return new ApiInfoBuilder() .title("Library_Api")
+	 * .description("API do projeto de controle de aluguel de livros")
+	 * .version("1.0") .contact(contact()) .build(); }
+	 * 
+	 * private Contact contact() { return new Contact ("Luiz Paulo",
+	 * "https://github.com/LuizLiberatoscioli" , "luizhat10@gmail.com"); }
+	 */
 	
 }

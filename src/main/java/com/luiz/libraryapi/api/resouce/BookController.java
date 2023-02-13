@@ -41,8 +41,10 @@ import lombok.extern.slf4j.Slf4j;
 @RestController
 @RequestMapping("/api/books")
 @RequiredArgsConstructor
-@Api("Book API")
+//@Api("Book API")
 @Slf4j
+
+
 
 public class BookController {
 	
@@ -59,7 +61,7 @@ public class BookController {
 	
 	@PostMapping
 	@ResponseStatus (HttpStatus.CREATED)
-	@ApiOperation("Create a book")
+	//@ApiOperation("Create a book")
 	
 	public BookDTO create(@RequestBody @Valid BookDTO dto) {
 		log.info("creating a book for isbn: {}", dto.getIsbn());
